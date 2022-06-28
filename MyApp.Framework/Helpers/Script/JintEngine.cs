@@ -87,7 +87,7 @@ namespace MyApp.Framework.Helpers.Script
                 return false;
             }
 
-            return HasIdentifier(scriptFunctionInstance.FunctionDeclaration, variableName);
+            return HasIdentifier(scriptFunctionInstance.FunctionDeclaration as Node, variableName);
         }
 
         /// <inheritdoc />
@@ -247,7 +247,7 @@ namespace MyApp.Framework.Helpers.Script
         /// <param name="node">Syntax node.</param>
         /// <param name="identifierName">Name of the identifier.</param>
         /// <returns>True if the node has the identifier.</returns>
-        private static bool HasIdentifier(INode node, string identifierName) =>
+        private static bool HasIdentifier(Node node, string identifierName) =>
             node.Type == Nodes.Identifier && node is Identifier identifier && identifier.Name == identifierName ||
             node.ChildNodes.Any(n => HasIdentifier(n, identifierName));
 
