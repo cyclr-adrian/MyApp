@@ -37,7 +37,7 @@ namespace MyApp.Framework.Helpers.Script
         /// <inheritdoc />
         public object Evaluate(string code)
         {
-            var o = _engine.Execute(code).GetCompletionValue().ToObject();
+            var o = _engine.Evaluate(code).ToObject();
 
             // Make sure ExpandoObject is in a list. Jint returns it in an array by default.
             var result = ExpandoObjectArrayToList(o);
@@ -91,7 +91,7 @@ namespace MyApp.Framework.Helpers.Script
         }
 
         /// <inheritdoc />
-        public bool HasGlobalValue(string variableName) => _engine.Global.HasProperty(variableName);
+        public bool HasGlobalValue(string variableName) => _engine.Realm.GlobalObject.HasProperty(variableName);
 
         /// <inheritdoc />
         public void SetGlobalFunction(string functionName, Delegate functionDelegate) => _engine.SetValue(functionName, functionDelegate);
@@ -259,7 +259,7 @@ namespace MyApp.Framework.Helpers.Script
                     return $@"{ex.Message}
 Line: {javaScriptException.LineNumber}
 Column: {javaScriptException.Column}
-Call stack: {javaScriptException.CallStack}
+Call stack: {javaScriptException.StackTrace}
 ";
                 case MyAppException myAppException:
                     return $@"{ex.Message}
